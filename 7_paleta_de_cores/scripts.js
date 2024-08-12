@@ -26,4 +26,5 @@ function generateRandomColor() {
   return color;
 }
 
-//teste
+//teste1
+//teste2
