@@ -25,3 +25,5 @@ function generateRandomColor() {
   }
   return color;
 }
+
+//teste
