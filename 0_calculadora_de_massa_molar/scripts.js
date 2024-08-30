@@ -122,13 +122,13 @@ const periodicTable = [
 
 const formulaMolecular = document.querySelector("#formulaMolecular");
 const calculatorBtn = document.querySelector("#calculatorBtn");
-const MassaMolar = document.querySelector("#MassaMolar");
+const molarMassOutput = document.querySelector("#MolarMass");
 
 function calculeteMolarMass() {
   // Validar e guardar a fórmula molecular de entrada
   const regex = /([A-Z][a-z]*)(\d*)/g;
   let match;
-  let MolarMass = 0;
+  let molarMass = 0;
 
   // Iterar sobre a fórmula molecular e calcular a massa molar
   while ((match = regex.exec(formulaMolecular.value)) !== null) {
@@ -140,7 +140,7 @@ function calculeteMolarMass() {
 
     if (element) {
       // Calcular a massa molar total
-      MolarMass += element.molarMass*elementCount;
+      molarMass += element.molarMass * elementCount;
     } else {
       console.error(
         `Elemento ${elementSymbol} não encontrado na tabela periódica.`
@@ -148,10 +148,10 @@ function calculeteMolarMass() {
     }
   }
 
-  console.log(`Massa Molar: ${MolarMass} g/mol`);
+  console.log(`Massa Molar: ${molarMass} g/mol`);
+  
   // Exibir a massa molar
-  MassaMolar.textContent = `${MolarMass} g/mol`;
+  molarMassOutput.value = `${molarMass} g/mol`;
 }
 
 calculatorBtn.addEventListener("click", calculeteMolarMass);
-
