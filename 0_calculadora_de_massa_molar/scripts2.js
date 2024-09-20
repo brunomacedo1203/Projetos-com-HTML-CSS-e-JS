@@ -1,4 +1,3 @@
-//Array com os elementos da tabela periódica
 const periodicTable = [
   { symbol: "H", name: "Hydrogen", atomicNumber: 1, molarMass: 1.008 },
   { symbol: "He", name: "Helium", atomicNumber: 2, molarMass: 4.0026 },
@@ -120,65 +119,50 @@ const periodicTable = [
   { symbol: "Og", name: "Oganesson", atomicNumber: 118, molarMass: 294 },
 ];
 
-const formulaMolecular = document.querySelector("#formulaMolecular");
+const formulaInput = document.querySelector("#formulaMolecular");
 const calculatorBtn = document.querySelector("#calculatorBtn");
 const molarMassOutput = document.querySelector("#MolarMass");
 
-function validateInputs(input) {
-  // Remover todos os espaços em branco da string formula molecular
-  return input.replace(/\s+/g, "");
+function formatFormula(formula) {
+  return formula
+    .replace(/\s+/g, "")
+    .replace(/(^|[^a-zA-Z])([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
 }
 
-function calculeteMolarMass() {
-  // Validar e guardar a fórmula molecular de entrada
-  const formulaMolecularValue = validateInputs(formulaMolecular.value);
-
-  // Exibir a fórmula molecular corrigida no console para ver o resultado da validação
-  console.log(`Fórmula Molecular Validada: ${formulaMolecularValue}`);
-
-  // Definição de fórmula molecular
+function validateInput() {
+  const formattedFormula = formatFormula(formulaInput.value);
+  let formulaOutput;
   const regex = /([A-Z][a-z]*)(\d*)/g;
-  let match;
-  let molarMass = 0;
-  // Flag para verificar se todos os elementos foram encontrados
-  let allElementsFound = true; 
 
-  // Iterar sobre a fórmula molecular e calcular a massa molar
-  while ((match = regex.exec(formulaMolecularValue)) !== null) {
-    const elementSymbol = match[1];
-    const elementCount = parseInt(match[2] || "1", 10);
+  //   console.log("Input formatado: " + formattedFormula);
 
-    // Encontrar o elemento identificado no Array const periodicTable
-    const element = periodicTable.find((e) => e.symbol === elementSymbol);
-
-    if (element) {
-      // Calcular a massa molar total
-      molarMass += element.molarMass * elementCount;
+  while ((formulaOutput = regex.exec(formattedFormula)) !== null) {
+    const elementSymbolUser = formulaOutput[1];
+    const elementCount = parseInt(formulaOutput[2] || "1", 10);
+    const elementSymbol = periodicTable.find(
+      (i) => i.symbol === elementSymbolUser
+    );
+    if (elementSymbol) {
+      console.log("Elemento encontrado:", elementSymbol);
     } else {
-      // Se algum elemento não for encontrado, definir a flag como falsa e registrar um erro
-      allElementsFound = false;
-      console.error(
-        `Elemento ${elementSymbol} não encontrado na tabela periódica.`
-      );
+      console.error("Elemento não encontrado: " + elementSymbolUser);
     }
   }
+}
 
-  if (allElementsFound) {
-    molarMassOutput.value = molarMass.toFixed(2);
-  } else {
-    // Se algum elemento não for encontrado, limpar o campo de massa molar e exibir mensagem de erro
-    molarMassOutput.value = "";
-    alert(
-      "Erro: Um ou mais símbolos não foram encontrados na tabela periódica."
-    );
+function calculateMolarMass() {}
+
+function FinalResult() {
+  if (validateInput) {
+    calculateMolarMass;
   }
 }
 
-calculatorBtn.addEventListener("click", calculeteMolarMass, validateInputs);
+calculatorBtn.addEventListener("click",FinalResult);
 
-//IMPLEMENTAÇÕES
-
-//Fazer uma regra para que o calculo não seja feito se a primeira letra for minuscula
-//Colocar uma msgs de erro, caso o input seja errado
-//Colocar o indice para aparecer subscrito dentro da label
-//Inserir uma calculadora para facilitar a digitação
+formulaInput.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    FinalResult();
+  }
+});
